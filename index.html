@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     أثر — Athar | الصفحة الرئيسية
+     جميع الحقوق محفوظة — (! MOD Dev)
+     ملاحظة: تخطيط RTL كامل مع دعم كانفس عالي الدقة
+     ============================================================ -->
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5" />
+  <meta name="theme-color" content="#F4F2EC" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <!-- بصمة المطوّر الرسمية -->
+  <meta name="author" content="(! MOD Dev)" />
+  <meta name="developer" content="(! MOD Dev)" />
+  <meta name="generator" content="(! MOD Dev)" />
+
+  <title>أثر — الصدقة الجارية</title>
+  <meta name="description" content="أثر: منصة لتتبّع الصدقة الجارية والأثر المتضاعف. طوّرها (! MOD Dev)." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============ الزخارف الخلفية ============ -->
+  <div class="bg-decor" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+    <span class="grid-veil"></span>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ============ شريط انقطاع الاتصال ============ -->
+  <div class="offline-banner" id="offlineBanner" hidden role="status" aria-live="polite">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M2 2l20 20" />
+      <path d="M5 12.5a10 10 0 0 1 4.5-2.6" />
+      <path d="M19 12.5a10 10 0 0 0-2.5-2.1" />
+      <path d="M8.5 16a5 5 0 0 1 4-1.9" />
+      <path d="M15.5 16a5 5 0 0 0-1.6-1.4" />
+      <path d="M12 20h.01" />
+    </svg>
+    <span>أنت غير متّصل بالإنترنت — تعذّر تحديث بعض البيانات</span>
+  </div>
+
+  <!-- ============ الترويسة اللاصقة ============ -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-logo-wrap">
+          <img src="assets/logo.png" class="brand-logo" alt="شعار أثر" />
+        </span>
+        <span class="brand-text">
+          <h1 class="brand-title">أثر <em>—</em> <span>الصدقة الجارية</span></h1>
+          <span class="brand-tag">آيةٌ تُقرأ، أو حديثٌ يُعمل به، أثرُه لا ينقطع</span>
+        </span>
+      </div>
+
+      <nav class="tabs" role="tablist" aria-label="أقسام التطبيق" id="tabsNav">
+        <span class="tab-glider" id="tabGlider" aria-hidden="true"></span>
+
+        <button class="tab is-active" id="tab-verses" role="tab" type="button"
+                aria-selected="true" aria-controls="panel-verses" data-target="verses">
+          <span class="tab-inner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4.6h6.4a2.4 2.4 0 0 1 2.4 2.4v12.6a2 2 0 0 0-2-2H4Z" />
+              <path d="M20 4.6h-6.4a2.4 2.4 0 0 0-2.4 2.4v12.6a2 2 0 0 1 2-2H20Z" />
+            </svg>
+            <span>الآيات والأحاديث</span>
+          </span>
+        </button>
+
+        <button class="tab" id="tab-sadaqah" role="tab" type="button"
+                aria-selected="false" aria-controls="panel-sadaqah" data-target="sadaqah">
+          <span class="tab-inner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 20.6S4.4 16.2 4.4 10.9A4.4 4.4 0 0 1 12 8.1a4.4 4.4 0 0 1 7.6 2.8c0 5.3-7.6 9.7-7.6 9.7Z" />
+            </svg>
+            <span>بوابات الصدقة</span>
+          </span>
+        </button>
+
+        <button class="tab" id="tab-tree" role="tab" type="button"
+                aria-selected="false" aria-controls="panel-tree" data-target="tree">
+          <span class="tab-inner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 21.2v-5.4" />
+              <path d="M12 15.8c-3.3 0-5.7-2.1-5.7-4.9 0-2.2 1.5-3.8 3.3-4C9.9 5 10.9 3 12 3s2.1 2 2.4 3.9c1.8.2 3.3 1.8 3.3 4 0 2.8-2.4 4.9-5.7 4.9Z" />
+            </svg>
+            <span>شجرة الأثر</span>
+          </span>
+        </button>
+
+        <button class="tab" id="tab-board" role="tab" type="button"
+                aria-selected="false" aria-controls="panel-board" data-target="board">
+          <span class="tab-inner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 21h8" />
+              <path d="M12 17v4" />
+              <path d="M17.5 3.5h2.2A1.3 1.3 0 0 1 21 4.8c0 2.4-1.6 4.4-4 5.1" />
+              <path d="M6.5 3.5H4.3A1.3 1.3 0 0 0 3 4.8c0 2.4 1.6 4.4 4 5.1" />
+              <path d="M6.6 3.5h10.8v5.1a5.4 5.4 0 0 1-10.8 0V3.5Z" />
+            </svg>
+            <span>لوحة الشرف</span>
+          </span>
+        </button>
+      </nav>
+
+      <div class="auth-slot" id="authSlot" aria-live="polite">
+        <button class="auth-btn" id="authOpenBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 3h3.5A2.5 2.5 0 0 1 21 5.5v13A2.5 2.5 0 0 1 18.5 21H15" />
+            <path d="M10 17l5-5-5-5" />
+            <path d="M15 12H3" />
+          </svg>
+          <span class="auth-btn-text">تسجيل الدخول</span>
+        </button>
+
+        <div class="auth-user" id="authUser" hidden aria-hidden="true">
+          <span class="auth-avatar" id="authAvatar" aria-hidden="true"></span>
+          <span class="auth-identity">
+            <span class="auth-email" id="authEmailDisplay" dir="auto"></span>
+            <span class="auth-role" id="authRoleDisplay"></span>
+          </span>
+          <button class="auth-logout" id="authLogoutBtn" type="button" aria-label="تسجيل الخروج">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 3H5.5A2.5 2.5 0 0 0 3 5.5v13A2.5 2.5 0 0 0 5.5 21H9" />
+              <path d="M14 17l5-5-5-5" />
+              <path d="M19 12H9" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ شريط الإحالة ============ -->
+  <div class="referral-banner" id="referralBanner" hidden role="status" aria-live="polite">
+    <span class="ref-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 20.6S4.4 16.2 4.4 10.9A4.4 4.4 0 0 1 12 8.1a4.4 4.4 0 0 1 7.6 2.8c0 5.3-7.6 9.7-7.6 9.7Z" />
+      </svg>
+    </span>
+    <span class="ref-text">
+      أنت تزور أثر الصديق <strong class="ref-name" id="refName">—</strong> ✦
+    </span>
+    <button class="ref-dismiss" id="refDismiss" type="button" aria-label="إغلاق التنبيه">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- ============ المحتوى الرئيسي ============ -->
+  <main>
+
+    <!-- ---------- لوحة الآيات والأحاديث ---------- -->
+    <section class="panel is-active" id="panel-verses" role="tabpanel" aria-labelledby="tab-verses">
+      <div class="panel-head">
+        <span class="eyebrow reveal" style="--i:0">الآيات والأحاديث</span>
+        <h2 class="panel-title reveal" style="--i:1">آيةٌ تتدبّرها… أو حديثٌ تعمل به</h2>
+        <p class="panel-lead reveal" style="--i:2">
+          نصوصٌ موثّقة، تُضاف يدوياً بعناية. اقرأ النص، أتمّ أثرَه، ثم شاركه ليمتدّ إلى غيرك.
+        </p>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat reveal" style="--i:3">
+          <span class="stat-num" data-stat="available">0</span>
+          <span class="stat-label">نصوص متاحة</span>
+        </div>
+        <div class="stat reveal" style="--i:4">
+          <span class="stat-num" data-stat="completed">0</span>
+          <span class="stat-label">نصوص أتممتها</span>
+        </div>
+        <div class="stat reveal" style="--i:5">
+          <span class="stat-num" data-stat="points">0</span>
+          <span class="stat-label">نقاط الأثر</span>
+        </div>
+      </div>
+
+      <div class="deeds-grid" id="versesGrid"></div>
+    </section>
+
+    <!-- ---------- لوحة بوابات الصدقة ---------- -->
+    <section class="panel" id="panel-sadaqah" role="tabpanel" aria-labelledby="tab-sadaqah">
+      <div class="panel-head">
+        <span class="eyebrow reveal" style="--i:0">بوابات الصدقة</span>
+        <h2 class="panel-title reveal" style="--i:1">مساراتٌ موثوقة… قريباً</h2>
+        <p class="panel-lead reveal" style="--i:2">
+          نعمل على تجهيز بوابات تبرّع معتمدة عبر منصات موثوقة، لتمتدّ الصدقة بأنقى الطرق.
+        </p>
+      </div>
+
+      <div class="sadaqah-empty reveal" style="--i:3">
+        <span class="sadaqah-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20.6S4.4 16.2 4.4 10.9A4.4 4.4 0 0 1 12 8.1a4.4 4.4 0 0 1 7.6 2.8c0 5.3-7.6 9.7-7.6 9.7Z" />
+          </svg>
+        </span>
+        <span class="sadaqah-badge">منصة إحسان</span>
+        <h3 class="sadaqah-title">سيتم إضافة مسارات التبرع الموثوقة<br/>عبر منصة إحسان قريباً</h3>
+        <p class="sadaqah-note">
+          نُجري حالياً مراجعةً دقيقة لضمان أن كل مسار تبرّع يمرّ عبر قنوات معتمدة وآمنة، صدقةً جارية موثوقة.
+        </p>
+        <span class="sadaqah-dots" aria-hidden="true">
+          <i></i><i></i><i></i>
+        </span>
+      </div>
+    </section>
+
+    <!-- ---------- لوحة شجرة الأثر (كانفس عالي الدقة) ---------- -->
+    <section class="panel" id="panel-tree" role="tabpanel" aria-labelledby="tab-tree">
+      <div class="panel-head">
+        <span class="eyebrow reveal" style="--i:0">شجرة الأثر</span>
+        <h2 class="panel-title reveal" style="--i:1">أثرٌ واحد… يتفرّع بلا نهاية</h2>
+        <p class="panel-lead reveal" style="--i:2">
+          أنت منبع الأثر في الأعلى. كل من يشارك النص عبر رابطك يظهر كفرع مباشر باسمه؛
+          وأثر من يأتي بعده يظهر كأثر متضاعف — بدون كشف هويته حفظاً للخصوصية.
+        </p>
+      </div>
+
+      <div class="tree-stage reveal" id="treeStage" style="--i:3">
+        <canvas id="impactTree" class="impact-canvas"
+                aria-label="شجرة الأثر — انقر على أي عقدة لعرض التفاصيل"></canvas>
+
+        <button class="tree-reset" id="treeReset" type="button" aria-label="إعادة التمركز">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 2v3" /><path d="M12 19v3" />
+            <path d="M2 12h3" /><path d="M19 12h3" />
+          </svg>
+        </button>
+
+        <div class="tree-legend">
+          <span class="legend-item"><i class="legend-dot dot-root"></i> منبع الأثر</span>
+          <span class="legend-item"><i class="legend-dot dot-branch"></i> أثر مباشر</span>
+          <span class="legend-item"><i class="legend-dot dot-leaf"></i> أثر متضاعف</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- لوحة الشرف ---------- -->
+    <section class="panel" id="panel-board" role="tabpanel" aria-labelledby="tab-board">
+      <div class="panel-head">
+        <span class="eyebrow reveal" style="--i:0">لوحة الشرف</span>
+        <h2 class="panel-title reveal" style="--i:1">أصحابُ الأثر الأكثر</h2>
+        <p class="panel-lead reveal" style="--i:2">
+          هؤلاء من جعلوا تدبّر النصوص عادة، فامتدّ أثرُهم إلى ما لا يُحصى.
+        </p>
+      </div>
+      <div class="board" id="board"></div>
+    </section>
+
+  </main>
+
+  <!-- ============ التذييل ============ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-ayah">
+        ﴿ مَثَلُ الَّذِينَ يُنفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنبَتَتْ سَبْعَ سَنَابِلَ ﴾
+      </p>
+      <p class="footer-note">أثر — الصدقة الجارية · (! MOD Dev)</p>
+
+      <div class="footer-actions">
+        <button class="about-trigger" id="aboutTrigger" type="button" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 8h.01" />
+            <path d="M11 12h1v5h1" />
+          </svg>
+          <span>عن أثر</span>
+        </button>
+
+        <button class="admin-trigger" id="adminTrigger" type="button" aria-haspopup="dialog"
+                hidden aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 9 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z" />
+          </svg>
+          <span>إدارة المحتوى</span>
+        </button>
+      </div>
+
+      <!-- ▼ أيقونات التواصل الاجتماعي -->
+      <div class="footer-socials" aria-label="حسابات أثر على منصات التواصل">
+        <a class="social-link social-link-instagram"
+           href="https://www.instagram.com/athar.app10?stkn=MWxjd3ZoNDh4MTllMw%3D%3D&utm_source=qr"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="حساب أثر على إنستغرام">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.5" cy="6.5" r=".9" fill="currentColor" stroke="none" />
+          </svg>
+        </a>
+
+        <a class="social-link social-link-tiktok"
+           href="https://www.tiktok.com/@athar.app10?_r=1&_t=ZS-99oEe4XYavf"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="حساب أثر على تيك توك">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ نافذة "عن أثر" ============ -->
+  <div class="modal-overlay about-overlay" id="aboutModal" aria-hidden="true">
+    <div class="modal-backdrop" data-about-close></div>
+    <div class="modal about-modal" role="dialog" aria-modal="true"
+         aria-labelledby="aboutModalTitle" id="aboutDialog">
+      <header class="modal-head">
+        <span class="modal-eyebrow">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          فلسفة المنصة
+        </span>
+        <h3 class="modal-title" id="aboutModalTitle">عن أثر</h3>
+        <button class="modal-close" type="button" data-about-close aria-label="إغلاق">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </header>
+
+      <div class="about-body">
+        <div class="about-hero">
+          <span class="about-hero-ornament" aria-hidden="true">❖</span>
+          <p class="about-hero-quote">
+            مَثَلُ الَّذِينَ يُنفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنبَتَتْ سَبْعَ سَنَابِلَ
+          </p>
+          <span class="about-hero-source">سورة البقرة · الآية ٢٦١</span>
+        </div>
+
+        <div class="about-section">
+          <span class="about-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2c3.2 4.1 6.1 7 6.1 10.5a6.1 6.1 0 1 1-12.2 0C5.9 9.9 8.8 7 12 2Z" />
+            </svg>
+          </span>
+          <div>
+            <h4>الصدقة الجارية</h4>
+            <p>
+              منصةٌ تُمكّنك من قراءة آيةٍ أو حديثٍ وإتمام أثرِه، ثم مشاركة النصّ مع الآخرين
+              ليتضاعف النفع. كل قراءة صادقة تُحتسب صدقةً جارية بلا انقطاع.
+            </p>
+          </div>
+        </div>
+
+        <div class="about-section">
+          <span class="about-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M12 3v3" /><path d="M12 18v3" />
+              <path d="M3 12h3" /><path d="M18 12h3" />
+              <circle cx="12" cy="12" r="9" />
+            </svg>
+          </span>
+          <div>
+            <h4>أثر الفراشة</h4>
+            <p>
+              عندما تُشارك رابطاً لصديق، ويُتمّ النص الذي وصل إليه من خلالك، ينمو فرعٌ جديد
+              على شجرتك. أثرك لا يتوقّف عندك — بل يمتدّ كموجةٍ متضاعفة.
+            </p>
+          </div>
+        </div>
+
+        <div class="about-section">
+          <span class="about-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 7v5l3 2" />
+            </svg>
+          </span>
+          <div>
+            <h4>توثيق القراءة</h4>
+            <p>
+              نمنحك مهلة ٣٠ ثانية للقراءة والتأمّل قبل الإتمام. لن نطلب منك أي إثباتٍ سوى
+              صدقك مع الله — فاللهُ يعلمُ وأنت تعلم.
+            </p>
+          </div>
+        </div>
+
+        <div class="about-section">
+          <span class="about-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+          </span>
+          <div>
+            <h4>الخصوصية أوّلاً</h4>
+            <p>
+              في شجرة الأثر، تظهر أسماء الأصدقاء الذين شاركتهم مباشرةً داخل العقد نفسها،
+              أما من جاء بعدهم فيظهر كأثرٍ متضاعف مجهول الهوية حفظاً لخصوصية الجميع.
+            </p>
+          </div>
+        </div>
+
+        <div class="about-closing">
+          <span class="about-closing-ornament" aria-hidden="true">✦</span>
+          <p>جزاك الله خيراً على كل قراءة، وكل أثر، وكل صدقةٍ جارية تتركها خلفك.</p>
+          <span class="about-signature">— (! MOD Dev)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ نافذة المصادقة ============ -->
+  <div class="modal-overlay auth-overlay" id="authModal" aria-hidden="true">
+    <div class="modal-backdrop" data-auth-close></div>
+    <div class="modal auth-modal" role="dialog" aria-modal="true"
+         aria-labelledby="authModalTitle" id="authDialog">
+      <header class="modal-head">
+        <span class="modal-eyebrow">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          حسابك في أثر
+        </span>
+        <h3 class="modal-title" id="authModalTitle">تسجيل الدخول</h3>
+        <button class="modal-close" type="button" data-auth-close aria-label="إغلاق">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </header>
+
+      <div class="auth-segmented" role="tablist" aria-label="نوع الحساب">
+        <span class="auth-seg-glider" id="authSegGlider" aria-hidden="true"></span>
+        <button class="auth-seg is-active" type="button" role="tab"
+                aria-selected="true" data-auth-view="signin">تسجيل الدخول</button>
+        <button class="auth-seg" type="button" role="tab"
+                aria-selected="false" data-auth-view="signup">إنشاء حساب</button>
+      </div>
+
+      <form class="modal-form" id="authForm" novalidate autocomplete="on">
+        <label class="field auth-username-field" id="authUsernameField" hidden>
+          <span class="field-label">الاسم الكريم</span>
+          <input class="field-input" type="text" id="authUsername" name="username"
+                 placeholder="مثال: أحمد الغامدي" maxlength="24"
+                 autocomplete="name" spellcheck="false" dir="auto" />
+          <span class="field-hint">٣ إلى ٢٤ حرفاً — عربي أو إنجليزي أو أرقام أو مسافات</span>
+        </label>
+
+        <label class="field">
+          <span class="field-label">البريد الإلكتروني</span>
+          <input class="field-input" type="email" id="authEmail" name="email"
+                 placeholder="you@example.com" dir="ltr" autocomplete="email" required />
+        </label>
+
+        <label class="field">
+          <span class="field-label">كلمة المرور</span>
+          <input class="field-input" type="password" id="authPassword" name="password"
+                 placeholder="••••••••" dir="ltr" autocomplete="current-password"
+                 minlength="8" required />
+          <span class="field-hint" id="authPasswordHint" hidden>٨ أحرف على الأقل</span>
+        </label>
+
+        <div class="auth-feedback" id="authFeedback" role="alert" aria-live="polite"></div>
+
+        <div class="modal-actions">
+          <button class="btn-ghost" type="button" data-auth-close>إلغاء</button>
+          <button class="btn-primary" type="submit" id="authSubmitBtn">
+            <span class="btn-text" id="authSubmitText">دخول</span>
+            <span class="auth-spinner" id="authSpinner" hidden aria-hidden="true"></span>
+            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 12H6" /><path d="M11 6l-6 6 6 6" />
+            </svg>
+          </button>
+        </div>
+
+        <p class="auth-legal">بالمتابعة أنت توافق على سياسة الاستخدام وشروط الخصوصية.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ نافذة الإدارة ============ -->
+  <div class="modal-overlay admin-overlay" id="adminModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal admin-modal" role="dialog" aria-modal="true"
+         aria-labelledby="modalTitle" id="adminDialog">
+      <header class="modal-head">
+        <span class="modal-eyebrow">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          لوحة الإدارة
+        </span>
+        <h3 class="modal-title" id="modalTitle">إدارة المحتوى</h3>
+        <button class="modal-close" type="button" data-close aria-label="إغلاق">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </header>
+
+      <div class="admin-segmented" role="tablist" aria-label="نوع الإجراء" id="adminSegmented">
+        <span class="admin-seg-glider" id="adminSegGlider" aria-hidden="true"></span>
+
+        <button class="admin-seg is-active" type="button" role="tab"
+                aria-selected="true" data-admin-view="add">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 5v14" /><path d="M5 12h14" />
+          </svg>
+          <span>إضافة نص</span>
+        </button>
+
+        <button class="admin-seg" type="button" role="tab"
+                aria-selected="false" data-admin-view="manage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 6h16" /><path d="M4 12h16" /><path d="M4 18h10" />
+          </svg>
+          <span>إدارة النصوص</span>
+        </button>
+
+        <button class="admin-seg" type="button" role="tab"
+                aria-selected="false" data-admin-view="archive">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="4" rx="1.2" />
+            <path d="M5 8v11a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 19V8" />
+            <path d="M10 12h4" />
+          </svg>
+          <span>الأرشيف</span>
+        </button>
+      </div>
+
+      <form class="modal-form admin-form-view" id="adminForm" novalidate>
+        <input type="hidden" id="adminEditId" name="editId" value="" />
+
+        <div class="admin-edit-banner" id="adminEditBanner" hidden>
+          <span class="admin-edit-dot" aria-hidden="true"></span>
+          <span>وضع التعديل — أنت تحرّر نصاً موجوداً</span>
+          <button class="admin-edit-cancel" type="button" id="adminCancelEdit">إلغاء التعديل</button>
+        </div>
+
+        <h4 class="admin-form-title" id="adminFormTitle" hidden>تعديل النص</h4>
+
+        <label class="field">
+          <span class="field-label">النوع</span>
+          <div class="field-select-wrap">
+            <select class="field-input field-select" name="type" id="verseType" required>
+              <option value="ayah">آية قرآنية</option>
+              <option value="hadith">حديث شريف</option>
+            </select>
+            <span class="field-select-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span class="field-label">المصدر</span>
+          <input class="field-input" type="text" name="ref" id="verseRef"
+                 placeholder="مثال: سورة البقرة · الآية ٢٥٥ — أو — رواه البخاري"
+                 maxlength="80" required autocomplete="off" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">النص</span>
+          <textarea class="field-input field-area field-area-lg" name="content" id="verseContent"
+                    placeholder="اكتب نص الآية أو الحديث كما هو موثّق…"
+                    maxlength="600" required></textarea>
+        </label>
+
+        <label class="field field-points">
+          <span class="field-label">
+            <svg class="field-label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2 15.09 8.26 22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z" />
+            </svg>
+            <span>قيمة النقاط</span>
+          </span>
+          <div class="field-points-wrap">
+            <input class="field-input field-points-input" type="number" name="points" id="versePoints"
+                   value="10" min="1" max="999" step="1" required inputmode="numeric" />
+            <span class="field-points-suffix">نقطة</span>
+          </div>
+          <span class="field-hint">تُمنح للقارئ عند كل إتمام (مرة كل ٢٤ ساعة)</span>
+        </label>
+
+        <div class="modal-actions">
+          <button class="btn-ghost" type="button" data-close>إلغاء</button>
+          <button class="btn-primary" type="submit" id="adminSubmitBtn">
+            <span class="btn-text" id="adminSubmitText">نشر النص</span>
+            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 12H6" /><path d="M11 6l-6 6 6 6" />
+            </svg>
+          </button>
+        </div>
+      </form>
+
+      <div class="admin-manage-view" id="adminManageView" hidden>
+        <div class="admin-manage-head">
+          <div class="admin-manage-title">
+            <span class="admin-manage-count" id="adminManageCount">٠</span>
+            <span>نص منشور</span>
+          </div>
+          <button class="admin-refresh" type="button" id="adminRefreshList" aria-label="تحديث القائمة">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12a9 9 0 1 1-3-6.7L21 8" />
+              <path d="M21 3v5h-5" />
+            </svg>
+            <span>تحديث</span>
+          </button>
+        </div>
+        <div class="admin-list" id="adminList" role="list"></div>
+      </div>
+
+      <div class="admin-manage-view" id="adminArchiveView" hidden>
+        <div class="admin-manage-head">
+          <div class="admin-manage-title">
+            <span class="admin-manage-count" id="adminArchiveCount">٠</span>
+            <span>نص مؤرشف</span>
+          </div>
+          <button class="admin-refresh" type="button" id="adminRefreshArchive" aria-label="تحديث الأرشيف">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12a9 9 0 1 1-3-6.7L21 8" />
+              <path d="M21 3v5h-5" />
+            </svg>
+            <span>تحديث</span>
+          </button>
+        </div>
+
+        <div class="admin-archive-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" /><path d="M12 8v4" /><path d="M12 16h.01" />
+          </svg>
+          <span>تُؤرشف النصوص تلقائياً بعد ٤٨ ساعة من نشرها عبر مهمة مجدولة.</span>
+        </div>
+
+        <div class="admin-list" id="adminArchiveList" role="list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ نافذة المشاركة الاجتماعية ============ -->
+  <div class="modal-overlay share-overlay" id="shareModal" aria-hidden="true">
+    <div class="modal-backdrop" data-share-close></div>
+    <div class="modal share-modal" role="dialog" aria-modal="true"
+         aria-labelledby="shareModalTitle" id="shareDialog">
+      <header class="modal-head">
+        <span class="modal-eyebrow">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          شارك الأثر
+        </span>
+        <h3 class="modal-title" id="shareModalTitle">شارك النص مع من تحب</h3>
+        <button class="modal-close" type="button" data-share-close aria-label="إغلاق">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </header>
+
+      <div class="share-preview" id="sharePreview">
+        <div class="share-preview-ref" id="sharePreviewRef">—</div>
+        <div class="share-preview-text" id="sharePreviewText">—</div>
+      </div>
+
+      <div class="share-grid">
+        <button class="share-btn share-btn-whatsapp" id="shareWhatsapp" type="button">
+          <span class="share-btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+            </svg>
+          </span>
+          <span class="share-btn-label">واتساب</span>
+        </button>
+
+        <button class="share-btn share-btn-x" id="shareX" type="button">
+          <span class="share-btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </span>
+          <span class="share-btn-label">X / تويتر</span>
+        </button>
+
+        <button class="share-btn share-btn-telegram" id="shareTelegram" type="button">
+          <span class="share-btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+            </svg>
+          </span>
+          <span class="share-btn-label">تيليجرام</span>
+        </button>
+
+        <button class="share-btn share-btn-copy" id="shareCopy" type="button">
+          <span class="share-btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2.5" />
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+            </svg>
+          </span>
+          <span class="share-btn-label">نسخ الرابط</span>
+        </button>
+      </div>
+
+      <div class="share-url" id="shareUrl">
+        <input type="text" id="shareUrlInput" readonly dir="ltr" />
+        <button class="share-url-copy" id="shareUrlCopy" type="button" aria-label="نسخ">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+               stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2.5" />
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ نافذة إتمام القراءة ============ -->
+  <div class="deed-view-overlay" id="deedView" aria-hidden="true">
+    <div class="deed-view-backdrop" data-deed-close></div>
+    <div class="deed-view-card" role="dialog" aria-modal="true" aria-labelledby="deedViewReferrer">
+      <span class="deed-view-ref-chip" id="deedViewRefChip">
+        <span class="deed-view-chip-dot" aria-hidden="true"></span>
+        <span>مشاركة من <strong class="deed-view-referrer" id="deedViewReferrer">—</strong></span>
+      </span>
+
+      <span class="deed-view-type-badge" id="deedViewType">—</span>
+      <blockquote class="deed-view-text" id="deedViewText">—</blockquote>
+      <cite class="deed-view-ref" id="deedViewRef">—</cite>
+
+      <div class="deed-view-points">
+        <span class="points-value" id="deedViewPoints">٠</span>
+        <span class="points-label">نقطة</span>
+      </div>
+
+      <div class="deed-view-actions">
+        <button class="btn-primary" id="deedViewComplete" type="button" disabled>
+          <span class="btn-text" id="deedViewCompleteText">يرجى القراءة... (30)</span>
+          <span class="deed-view-spinner" id="deedViewSpinner" hidden aria-hidden="true"></span>
+          <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 12H6" /><path d="M11 6l-6 6 6 6" />
+          </svg>
+        </button>
+        <button class="btn-ghost" id="deedViewLater" type="button">لاحقاً</button>
+      </div>
+
+      <button class="deed-view-share-btn" id="deedViewShare" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+          <path d="m8.6 13.5 6.8 3.9" /><path d="m15.4 6.6-6.8 3.9" />
+        </svg>
+        <span>شارك هذا النص</span>
+      </button>
+
+      <p class="deed-view-footer-note">
+        عند إتمامك هذا النص، يمتدّ أثرك إلى من شاركه معك ✦
+      </p>
+    </div>
+  </div>
+
+  <!-- ============ بطاقة معلومات العقدة ============ -->
+  <div id="nodePopover" class="node-popover" role="dialog" aria-hidden="true" hidden>
+    <div class="node-popover-arrow" aria-hidden="true"></div>
+    <div class="node-popover-header">
+      <div class="node-popover-avatar" id="popoverAvatar">؟</div>
+      <div class="node-popover-text">
+        <div class="node-popover-title" id="popoverTitle">—</div>
+        <div class="node-popover-subtitle" id="popoverSubtitle">—</div>
+      </div>
+    </div>
+    <div class="node-popover-body" id="popoverBody"></div>
+  </div>
+
+  <!-- ============ التنبيه السريع ============ -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span class="toast-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6 9 17l-5-5" />
+      </svg>
+    </span>
+    <span class="toast-text" id="toastText">تم نسخ الرابط</span>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
